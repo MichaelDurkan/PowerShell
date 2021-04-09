@@ -1,0 +1,4 @@
+# Get all the VHD Size for all VMs on the Hyper-V cluster node, you need to get the Hyper-V cluster node first to passing the computername parameter
+# This script can be modified to return other parameters
+
+Get-VM -ComputerName (Get-ClusterNode) | ForEach-Object {Get-VHD -ComputerName $_.ComputerName -VMId $_.VMId} | Select -Property path,computername,vhdtype,@{label='Size(GB)';expression={$_.filesize/1gb -as [int]}}
